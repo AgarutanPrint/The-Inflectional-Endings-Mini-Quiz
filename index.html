@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Inflectional Endings Quiz — Agarutan Print</title>
+<style>
+  :root{
+    --ing-color:#fb8c00;
+    --ing-light:#fff3e0;
+    --s-color:#1e88e5;
+    --s-light:#e3f2fd;
+    --er-color:#43a047;
+    --er-light:#e8f5e9;
+    --mastery-color1:#7b1fa2;
+    --mastery-color2:#4a148c;
+    --ink:#2b2b33;
+    --muted:#8a8a95;
+    --bg:#f6f5fb;
+    --card-bg:#ffffff;
+    --green-fb:#e6f7ea;
+    --green-fb-border:#66bb6a;
+    --red-fb:#ffecec;
+    --red-fb-border:#ef5350;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI', Verdana, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:24px 12px;
+  }
+  .app{
+    width:100%;
+    max-width:480px;
+  }
+  .card{
+    background:var(--card-bg);
+    border-radius:18px;
+    padding:24px 22px;
+    box-shadow:0 4px 18px rgba(43,43,51,0.08);
+  }
+
+  /* ---------- MENU ---------- */
+  .brand{
+    text-align:center;
+    font-size:11px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  .menu-title{
+    text-align:center;
+    font-size:24px;
+    font-weight:800;
+    margin:0 0 4px 0;
+  }
+  .menu-sub{
+    text-align:center;
+    font-size:13.5px;
+    color:var(--muted);
+    margin:0 0 22px 0;
+    line-height:1.4;
+  }
+  .section-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .section-btn{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    padding:14px 16px;
+    border-radius:14px;
+    border:1.5px solid #ececf2;
+    background:#fbfbfd;
+    cursor:pointer;
+    text-align:left;
+    font-size:15px;
+    font-weight:600;
+    color:var(--ink);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .section-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 3px 10px rgba(0,0,0,0.07);
+  }
+  .dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    flex-shrink:0;
+  }
+  .sec-emoji{font-size:20px;}
+  .sec-text{flex:1;}
+  .sec-count{
+    font-size:12px;
+    font-weight:500;
+    color:var(--muted);
+  }
+  .mastery-btn{
+    background:linear-gradient(135deg, var(--mastery-color1), var(--mastery-color2));
+    border:none;
+    color:#fff;
+  }
+  .mastery-btn .sec-count{color:rgba(255,255,255,0.8);}
+
+  /* ---------- QUIZ SCREEN ---------- */
+  .quiz-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+  }
+  .exit-btn{
+    background:#fff0f0;
+    border:1.5px solid #ef9a9a;
+    color:#c62828;
+    font-weight:700;
+    font-size:12.5px;
+    padding:7px 12px;
+    border-radius:10px;
+    cursor:pointer;
+  }
+  .exit-btn:hover{background:#ffe1e1;}
+  .section-tag{
+    font-size:13px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .stats-bar{
+    display:flex;
+    justify-content:space-between;
+    background:#f4f3f9;
+    border-radius:12px;
+    padding:10px 8px;
+    margin-bottom:16px;
+    font-size:12.5px;
+    font-weight:700;
+  }
+  .stat{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    flex:1;
+    gap:2px;
+  }
+  .stat-label{font-size:10.5px;color:var(--muted);font-weight:600;}
+
+  .progress-track{
+    width:100%;
+    height:7px;
+    border-radius:5px;
+    background:#ececf2;
+    margin-bottom:16px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    border-radius:5px;
+    transition:width .25s ease;
+  }
+
+  .q-count{
+    font-size:12px;
+    color:var(--muted);
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  .q-text{
+    font-size:17px;
+    font-weight:700;
+    line-height:1.4;
+    margin-bottom:12px;
+  }
+  .hint-btn{
+    display:inline-block;
+    background:#fff8e1;
+    border:1.5px solid #ffca28;
+    color:#8d6e00;
+    font-size:12px;
+    font-weight:700;
+    padding:6px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-bottom:12px;
+  }
+  .hint-btn:hover{background:#fff3c4;}
+  .hint-box{
+    background:#fffde7;
+    border-left:4px solid #ffca28;
+    padding:9px 12px;
+    border-radius:8px;
+    font-size:13px;
+    margin-bottom:12px;
+    display:none;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .option{
+    padding:12px 14px;
+    border-radius:12px;
+    border:1.5px solid #e4e4ec;
+    background:#fbfbfd;
+    font-size:14.5px;
+    font-weight:600;
+    cursor:pointer;
+    text-align:left;
+  }
+  .option:hover{border-color:#c9c9d8;}
+  .option.correct{
+    background:var(--green-fb);
+    border-color:var(--green-fb-border);
+    color:#1b5e20;
+  }
+  .option.wrong{
+    background:var(--red-fb);
+    border-color:var(--red-fb-border);
+    color:#b71c1c;
+  }
+  .option.disabled{cursor:default;}
+
+  .feedback{
+    padding:11px 14px;
+    border-radius:12px;
+    font-size:13.5px;
+    font-weight:700;
+    margin-bottom:14px;
+    display:none;
+  }
+  .feedback.correct{
+    background:var(--green-fb);
+    border:1.5px solid var(--green-fb-border);
+    color:#1b5e20;
+  }
+  .feedback.wrong{
+    background:var(--red-fb);
+    border:1.5px solid var(--red-fb-border);
+    color:#b71c1c;
+  }
+  .next-btn{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:12px;
+    color:#fff;
+    font-weight:800;
+    font-size:14.5px;
+    cursor:pointer;
+    opacity:0.45;
+    pointer-events:none;
+    transition:opacity .15s ease;
+  }
+  .next-btn.active{opacity:1;pointer-events:auto;}
+
+  /* ---------- END SCREEN ---------- */
+  .end-wrap{text-align:center;}
+  .end-emoji{font-size:56px;margin-bottom:6px;}
+  .stars{
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    margin-bottom:10px;
+    height:28px;
+  }
+  .star{
+    font-size:24px;
+    opacity:0;
+    transform:scale(0.3);
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .star.show{opacity:1;transform:scale(1);}
+  .end-title{
+    font-size:21px;
+    font-weight:800;
+    margin:4px 0 4px 0;
+  }
+  .end-sub{
+    font-size:13.5px;
+    color:var(--muted);
+    margin-bottom:18px;
+  }
+  .pills{
+    display:flex;
+    gap:8px;
+    margin-bottom:22px;
+  }
+  .pill{
+    flex:1;
+    background:#f4f3f9;
+    border-radius:12px;
+    padding:10px 4px;
+    font-size:15px;
+    font-weight:800;
+  }
+  .pill-label{
+    display:block;
+    font-size:10px;
+    font-weight:600;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .end-buttons{
+    display:flex;
+    gap:10px;
+  }
+  .end-buttons button{
+    flex:1;
+    padding:13px;
+    border-radius:12px;
+    font-weight:800;
+    font-size:14px;
+    cursor:pointer;
+    border:none;
+  }
+  .btn-try{
+    background:#ececf2;
+    color:var(--ink);
+  }
+  .btn-menu{
+    color:#fff;
+  }
+
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="card" id="app-card"></div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+const SECTIONS = [
+  {
+    id: "ing_ed",
+    title: "-ing and -ed Endings",
+    emoji: "🏃",
+    color: "#fb8c00",
+    light: "#fff3e0",
+    questions: [
+      {q:'What is the correct -ing form of "run"?', options:["Runing","Running","Runeing","Runninng"], correct:"Running", hint:"Short vowel + single consonant → double the last letter."},
+      {q:'What is the correct -ed form of "hop"?', options:["Hoped","Hopped","Hopeed","Hopd"], correct:"Hopped", hint:"Short vowel + single consonant → double the last letter."},
+      {q:'What is the correct -ing form of "dance"?', options:["Dancing","Danceing","Dansing","Dancceing"], correct:"Dancing", hint:"Drop the silent -e before adding -ing."},
+      {q:'What is the correct -ed form of "smile"?', options:["Smileed","Smiled","Smileing","Smilled"], correct:"Smiled", hint:"Drop the silent -e before adding -ed."},
+      {q:'What is the correct -ing form of "play"?', options:["Playing","Plaing","Playeing","Plaiing"], correct:"Playing", hint:"For most verbs, just add -ing."},
+      {q:'What is the correct -ed form of "jump"?', options:["Jumpped","Jumped","Jumpeed","Jumpd"], correct:"Jumped", hint:"For most verbs, just add -ed."},
+      {q:'What is the correct -ed form of "cry"?', options:["Cryed","Cried","Criing","Cryied"], correct:"Cried", hint:"Verb ends in consonant + y → change y to i before -ed."},
+      {q:'What is the correct -ed form of "try"?', options:["Tryed","Tried","Triing","Tryied"], correct:"Tried", hint:"Verb ends in consonant + y → change y to i before -ed."},
+      {q:'What is the correct -ing form of "swim"?', options:["Swiming","Swimming","Swimeing","Swimmming"], correct:"Swimming", hint:"Short CVC word → double the last letter before -ing."},
+      {q:'What is the correct -ing form of "snow"?', options:["Snowwing","Snoing","Snowing","Snowwwing"], correct:"Snowing", hint:"Don't double the final letter if it's w, x, or y."},
+      {q:'What is the correct -ed form of "stop"?', options:["Stoped","Stopped","Stopeed","Stopd"], correct:"Stopped", hint:"Short vowel + single consonant → double the last letter."},
+      {q:'What is the correct -ing form of "panic"?', options:["Paniing","Panicing","Panicking","Panickking"], correct:"Panicking", hint:"Verbs ending in -c add a k before -ing."}
+    ]
+  },
+  {
+    id: "s_es",
+    title: "-s and -es Endings",
+    emoji: "🔤",
+    color: "#1e88e5",
+    light: "#e3f2fd",
+    questions: [
+      {q:'What is the plural of "cat"?', options:["Cates","Cats","Catss","Cates"], correct:"Cats", hint:"Most words just add -s."},
+      {q:'What is the plural of "box"?', options:["Boxs","Boxes","Boxxes","Boxies"], correct:"Boxes", hint:"Words ending in -x add -es."},
+      {q:'What is the plural of "wish"?', options:["Wishs","Wishes","Wishies","Wisheses"], correct:"Wishes", hint:"Words ending in -sh add -es."},
+      {q:'"Dad ___ to work." (go)', options:["Gos","Goes","Going","Went"], correct:"Goes", hint:"Verbs ending in -o often add -es."},
+      {q:'What is the plural of "baby"?', options:["Babys","Babies","Babes","Babyies"], correct:"Babies", hint:"Consonant + y → change y to i, add -es."},
+      {q:'What is the plural of "berry"?', options:["Berrys","Berries","Berryes","Berres"], correct:"Berries", hint:"Consonant + y → change y to i, add -es."},
+      {q:'What is the plural of "child"?', options:["Childs","Childes","Children","Childies"], correct:"Children", hint:"This is an irregular plural — memorize it!"},
+      {q:'What is the plural of "tooth"?', options:["Tooths","Toothes","Teeth","Teethes"], correct:"Teeth", hint:"This is an irregular plural — memorize it!"},
+      {q:'What is the plural of "quiz"?', options:["Quizs","Quizes","Quizzes","Quizies"], correct:"Quizzes", hint:"Double the z before adding -es."},
+      {q:'What is the plural of "city"?', options:["Citys","Cities","Citiees","Citties"], correct:"Cities", hint:"Consonant + y → change y to i, add -es."},
+      {q:'What is the plural of "hero"?', options:["Heros","Heroes","Heroies","Herose"], correct:"Heroes", hint:"Some words ending in -o add -es."},
+      {q:'What is the plural of "leaf"?', options:["Leafs","Leaves","Leafes","Leaveses"], correct:"Leaves", hint:"Some words ending in -f change to -ves."},
+      {q:'What is the plural of "mouse"?', options:["Mouses","Mices","Mice","Moose"], correct:"Mice", hint:"This is an irregular plural — memorize it!"},
+      {q:'What is the plural of "sheep"?', options:["Sheeps","Sheepes","Sheep","Sheepies"], correct:"Sheep", hint:"Some irregular plurals stay exactly the same."}
+    ]
+  },
+  {
+    id: "er_est",
+    title: "-er and -est Endings",
+    emoji: "📏",
+    color: "#43a047",
+    light: "#e8f5e9",
+    questions: [
+      {q:'What is the comparative (-er) form of "small"?', options:["Smaler","Smaller","Smallier","Smallor"], correct:"Smaller", hint:"Most adjectives just add -er."},
+      {q:'What is the superlative (-est) form of "big"?', options:["Bigest","Biggest","Bigiest","Biggiest"], correct:"Biggest", hint:"Short vowel + single consonant → double the last letter."},
+      {q:'What is the comparative form of "nice"?', options:["Nicer","Niceer","Nicier","Nicerer"], correct:"Nicer", hint:"Drop the silent -e before adding -er."},
+      {q:'What is the superlative form of "funny"?', options:["Funnyest","Funniest","Funnier","Funnyiest"], correct:"Funniest", hint:"Change y to i before adding -est."},
+      {q:'What is the comparative form of "tall"?', options:["Taler","Taller","Tallier","Tallor"], correct:"Taller", hint:"Most adjectives just add -er."},
+      {q:'What is the superlative form of "hot"?', options:["Hotest","Hottest","Hotiest","Hottiest"], correct:"Hottest", hint:"Short vowel + single consonant → double the last letter."},
+      {q:'What is the correct comparative form of "beautiful"?', options:["Beautifuler","More beautiful","Beautifullier","Beautifuller"], correct:"More beautiful", hint:"Long adjectives use more instead of -er."},
+      {q:'What is the superlative form of "good"?', options:["Gooder","Goodest","Best","Goodiest"], correct:"Best", hint:"This is an irregular comparison — memorize it!"},
+      {q:'What is the comparative form of "bad"?', options:["Badder","Worse","Baddier","Badest"], correct:"Worse", hint:"This is an irregular comparison — memorize it!"},
+      {q:'What is the superlative form of "far"?', options:["Farer","Farest","Farthest","Farrer"], correct:"Farthest", hint:"This is an irregular comparison — memorize it!"},
+      {q:'What is the comparative form of "happy"?', options:["Happyer","Happier","Happyier","Happer"], correct:"Happier", hint:"Change y to i before adding -er."},
+      {q:'What is the superlative form of "large"?', options:["Largeest","Largest","Largiest","Larger"], correct:"Largest", hint:"Drop the silent -e before adding -est."},
+      {q:'What is the correct superlative form of "interesting"?', options:["Interestingest","Most interesting","Interestinger","Interestingiest"], correct:"Most interesting", hint:"Long adjectives use most instead of -est."},
+      {q:'What is the comparative form of "soft"?', options:["Softer","Softier","Softtier","Soffter"], correct:"Softer", hint:"Most adjectives just add -er."}
+    ]
+  }
+];
+
+const MASTERY = {
+  id: "mastery",
+  title: "Mastery Test",
+  emoji: "🏆",
+  color: "#7b1fa2",
+  light: "#f3e5f5",
+  isMastery: true,
+  questions: [
+    {q:'"She is ___ on the bed!" (jump)', options:["Jumped","Jumping","Jumps","Jumpped"], correct:"Jumping", hint:"An action happening right now uses -ing."},
+    {q:'"He ___ to school yesterday." (walk)', options:["Walking","Walks","Walked","Walkking"], correct:"Walked", hint:"An action that already happened uses -ed."},
+    {q:'"The dog ___ fast." (run)', options:["Run","Runs","Running","Runned"], correct:"Runs", hint:"He/she/it doing something now takes -s."},
+    {q:'"We packed three ___." (box)', options:["Boxs","Box","Boxes","Boxies"], correct:"Boxes", hint:"Words ending in -x add -es for the plural."},
+    {q:'"The ___ are sleeping." (baby)', options:["Babys","Baby","Babies","Babyes"], correct:"Babies", hint:"Consonant + y → change y to i, add -es."},
+    {q:'"Brush your ___!" (tooth)', options:["Tooths","Teeth","Toothes","Teethes"], correct:"Teeth", hint:"This is an irregular plural."},
+    {q:'"This cat is ___ than that cat." (small)', options:["Small","Smaller","Smallest","Smallier"], correct:"Smaller", hint:"Comparing two things uses -er."},
+    {q:'"She is the ___ runner in our class." (fast)', options:["Faster","Fastest","Fast","Fastier"], correct:"Fastest", hint:"Comparing three or more uses -est."},
+    {q:'"My pencil is ___ than yours." (sharp)', options:["Sharper","Sharpest","Sharp","Sharpier"], correct:"Sharper", hint:"Comparing two things uses -er."},
+    {q:'"This is the ___ building in the city!" (tall)', options:["Taller","Tallest","Tall","Tallier"], correct:"Tallest", hint:"Comparing three or more uses -est."},
+    {q:'What is the -ing form of "smile"?', options:["Smileing","Smiling","Smilling","Smiled"], correct:"Smiling", hint:"Drop the silent -e before adding -ing."},
+    {q:'What is the plural of "wolf"?', options:["Wolfs","Wolves","Wolfes","Wolfies"], correct:"Wolves", hint:"Some words ending in -f change to -ves."},
+    {q:'What is the -ed form of "try"?', options:["Tryed","Tried","Triing","Tryies"], correct:"Tried", hint:"Consonant + y → change y to i before -ed."},
+    {q:'What is the superlative form of "good"?', options:["Gooder","Goodest","Best","Betterest"], correct:"Best", hint:"This is an irregular comparison — memorize it!"},
+    {q:'What is the plural of "potato"?', options:["Potatos","Potatoes","Potatoies","Potatoe"], correct:"Potatoes", hint:"Some words ending in -o add -es."}
+  ]
+};
+
+const ALL_SECTIONS = [...SECTIONS, MASTERY];
+
+/* ============ STATE ============ */
+let state = {
+  sectionIndex: 0,
+  questions: [],
+  qIndex: 0,
+  points: 0,
+  correct: 0,
+  wrong: 0,
+  hintUsedThisQ: false,
+  answeredThisQ: false
+};
+
+const appCard = document.getElementById('app-card');
+
+/* ============ HELPERS ============ */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function scorePct(){
+  const total = state.correct + state.wrong;
+  return total === 0 ? 0 : Math.round((state.correct / total) * 100);
+}
+
+/* ============ MENU ============ */
+function renderMenu(){
+  let html = `
+    <div class="brand">Agarutan Print</div>
+    <h1 class="menu-title">The Inflectional Endings Quiz</h1>
+    <p class="menu-sub">Practice -ing/-ed, -s/-es, and -er/-est endings, then take the Mastery Test!</p>
+    <div class="section-list">
+  `;
+  SECTIONS.forEach((sec, i) => {
+    html += `
+      <button class="section-btn" onclick="startSection(${i})">
+        <span class="dot" style="background:${sec.color}"></span>
+        <span class="sec-emoji">${sec.emoji}</span>
+        <span class="sec-text">${sec.title}</span>
+        <span class="sec-count">${sec.questions.length}Q</span>
+      </button>
+    `;
+  });
+  html += `
+      <button class="section-btn mastery-btn" onclick="startSection(${SECTIONS.length})">
+        <span class="sec-emoji">${MASTERY.emoji}</span>
+        <span class="sec-text">${MASTERY.title}</span>
+        <span class="sec-count">${MASTERY.questions.length}Q</span>
+      </button>
+    </div>
+  `;
+  appCard.innerHTML = html;
+}
+
+/* ============ QUIZ FLOW ============ */
+function startSection(index){
+  state.sectionIndex = index;
+  const sec = ALL_SECTIONS[index];
+  state.questions = shuffle(sec.questions).map(q => ({
+    ...q,
+    shuffledOptions: shuffle(q.options)
+  }));
+  state.qIndex = 0;
+  state.points = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const sec = ALL_SECTIONS[state.sectionIndex];
+  const total = state.questions.length;
+  const q = state.questions[state.qIndex];
+  state.hintUsedThisQ = false;
+  state.answeredThisQ = false;
+
+  const progressPct = Math.round((state.qIndex / total) * 100);
+
+  let optsHtml = '';
+  q.shuffledOptions.forEach((opt) => {
+    optsHtml += `<button class="option" onclick="selectOption(this, '${opt.replace(/'/g,"\\'")}')">${opt}</button>`;
+  });
+
+  appCard.innerHTML = `
+    <div class="quiz-header">
+      <div class="section-tag" style="color:${sec.color}">${sec.emoji} ${sec.title}</div>
+      <button class="exit-btn" onclick="renderMenu()">Exit</button>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat"><span>${state.points}</span><span class="stat-label">Points</span></div>
+      <div class="stat"><span>✅ ${state.correct}</span><span class="stat-label">Correct</span></div>
+      <div class="stat"><span>❌ ${state.wrong}</span><span class="stat-label">Wrong</span></div>
+      <div class="stat"><span>🎯 ${scorePct()}%</span><span class="stat-label">Score</span></div>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" style="width:${progressPct}%; background:${sec.color}"></div>
+    </div>
+
+    <div class="q-count">Question ${state.qIndex + 1} of ${total}</div>
+    <div class="q-text">${q.q}</div>
+
+    <button class="hint-btn" id="hintBtn" onclick="showHint()">💡 Hint</button>
+    <div class="hint-box" id="hintBox">${q.hint || ''}</div>
+
+    <div class="options" id="optionsWrap">${optsHtml}</div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <button class="next-btn" id="nextBtn" style="background:${sec.color}" onclick="nextQuestion()">Next</button>
+  `;
+}
+
+function showHint(){
+  state.hintUsedThisQ = true;
+  document.getElementById('hintBox').style.display = 'block';
+  document.getElementById('hintBtn').style.opacity = '0.5';
+  document.getElementById('hintBtn').style.pointerEvents = 'none';
+}
+
+function selectOption(btnEl, chosenValue){
+  if(state.answeredThisQ) return;
+  state.answeredThisQ = true;
+
+  const q = state.questions[state.qIndex];
+  const isCorrect = chosenValue === q.correct;
+  const allOptionBtns = document.querySelectorAll('#optionsWrap .option');
+
+  allOptionBtns.forEach(btn => {
+    btn.classList.add('disabled');
+    btn.onclick = null;
+    if(btn.textContent === q.correct){
+      btn.classList.add('correct');
+    }
+  });
+
+  if(!isCorrect){
+    btnEl.classList.add('wrong');
+  }
+
+  const feedbackEl = document.getElementById('feedback');
+  feedbackEl.style.display = 'block';
+
+  if(isCorrect){
+    const pts = state.hintUsedThisQ ? 5 : 10;
+    state.points += pts;
+    state.correct += 1;
+    feedbackEl.classList.add('correct');
+    feedbackEl.textContent = `✅ Correct! +${pts} points`;
+  } else {
+    state.wrong += 1;
+    feedbackEl.classList.add('wrong');
+    feedbackEl.textContent = `❌ Not quite — the correct answer is "${q.correct}"`;
+  }
+
+  // update stats bar live
+  document.querySelectorAll('.stat span')[0].textContent = state.points;
+  document.querySelectorAll('.stat span')[2].textContent = `✅ ${state.correct}`;
+  document.querySelectorAll('.stat span')[4].textContent = `❌ ${state.wrong}`;
+  document.querySelectorAll('.stat span')[6].textContent = `🎯 ${scorePct()}%`;
+
+  document.getElementById('nextBtn').classList.add('active');
+}
+
+function nextQuestion(){
+  if(state.qIndex < state.questions.length - 1){
+    state.qIndex += 1;
+    renderQuestion();
+  } else {
+    renderEnd();
+  }
+}
+
+/* ============ END SCREEN ============ */
+function renderEnd(){
+  const sec = ALL_SECTIONS[state.sectionIndex];
+  const pct = scorePct();
+  const passed = pct >= 70;
+
+  let title, emoji;
+  if(pct === 100){
+    title = "🏆 Spectacular"; emoji = "🏆";
+  } else if(pct >= 85){
+    title = "⭐ Excellent"; emoji = "⭐";
+  } else if(pct >= 70){
+    title = "🌟 Great Job"; emoji = "🌟";
+  } else {
+    title = "Keep Practicing!"; emoji = "💪";
+  }
+
+  appCard.innerHTML = `
+    <div class="end-wrap">
+      <div class="end-emoji">${emoji}</div>
+      ${passed ? `<div class="stars" id="starsRow">
+        <span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span>
+      </div>` : ''}
+      <div class="end-title">${title}</div>
+      <div class="end-sub">${passed ? "You finished " + sec.title + "!" : "Review " + sec.title + " and try again — you'll get it!"}</div>
+
+      <div class="pills">
+        <div class="pill">${state.points}<span class="pill-label">Points</span></div>
+        <div class="pill">${state.correct}<span class="pill-label">Correct</span></div>
+        <div class="pill">${state.wrong}<span class="pill-label">Wrong</span></div>
+        <div class="pill">${pct}%<span class="pill-label">Score</span></div>
+      </div>
+
+      <div class="end-buttons">
+        <button class="btn-try" onclick="startSection(${state.sectionIndex})">Try Again</button>
+        <button class="btn-menu" style="background:${sec.color}" onclick="renderMenu()">Menu</button>
+      </div>
+    </div>
+  `;
+
+  if(passed){
+    const stars = document.querySelectorAll('.star');
+    stars.forEach((star, i) => {
+      setTimeout(() => star.classList.add('show'), i * 150);
+    });
+  }
+}
+
+/* ============ INIT ============ */
+renderMenu();
+</script>
+</body>
+</html>
